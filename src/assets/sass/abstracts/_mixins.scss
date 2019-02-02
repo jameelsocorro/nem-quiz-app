@@ -1,0 +1,84 @@
+@mixin generate-spaces($key, $space) {
+
+	$spacer: #{($space * .0625)}rem;
+
+	// Generate margin all corners
+	.m-#{$key} {
+		margin: $spacer;
+	}
+
+	// Generate padding all corners
+	.p-#{$key} {
+		padding: $spacer;
+	}
+
+	@each $corner in $corners {
+
+		$position: str-slice($corner, 0, 1);
+
+		// Generate corners for margin
+		.m#{$position}-#{$key} {
+			margin-#{$corner}: $spacer;
+		}
+
+		// Generate corners for padding
+		.p#{$position}-#{$key} {
+			padding-#{$corner}: $spacer;
+		}
+
+	}
+
+}
+
+@mixin init-colors() {
+	@each $color in $colors {
+		$key: nth($color, 1);
+		$value: nth($color, 2);
+
+		.#{$key}-text {
+			color: #{$value};
+		}
+
+		.bg-#{$key} {
+			background-color: #{$value};
+		}
+	}
+}
+
+@mixin init-spaces() {
+	@each $space in $spaces {
+		@include generate-spaces($space, $space);
+	}
+
+	//Generate breakpoint spaces
+	@each $breakpoint in $breakpoints {
+		$key: nth($breakpoint, 1);
+		$value: nth($breakpoint, 2);
+
+		@media (min-width: #{$value}px) {
+
+			@if $key == 'mobile' {
+				@include generate-spaces($key, 8);
+			}
+
+			@if $key == 'mobile' {
+				@include generate-spaces($key, 16);
+			}
+
+			@if $key == 'desktop' {
+				@include generate-spaces($key, 24);
+			}
+
+		}
+	}
+}
+
+@mixin whiteframe-shadow($dp: 1,
+    $shadow-base-color: get-color(black), $shadow-key-umbra-opacity: 0.2,
+    $shadow-key-penumbra-opacity: 0.14, $shadow-ambient-shadow-opacity: 0.12) {
+	$shadows: nth($whiteframe-shadows, $dp);
+
+    box-shadow: nth($shadows, 1) rgba($shadow-base-color, $shadow-key-umbra-opacity),
+            nth($shadows, 2) rgba($shadow-base-color, $shadow-key-penumbra-opacity),
+            nth($shadows, 3) rgba($shadow-base-color, $shadow-ambient-shadow-opacity);
+}

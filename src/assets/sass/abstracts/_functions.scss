@@ -1,0 +1,29 @@
+@function get-color($arg) {
+    $result: #212121;
+
+    @each $color in $colors {
+        $key: nth($color, 1);
+        $value: nth($color, 2);
+
+        @if $key == $arg {
+            $result: $value;
+        }
+    }
+
+    @return $result;
+}
+
+@function get-resolution($arg) {
+    $result: 480;
+
+    @each $resolution in $breakpoints {
+        $key: nth($resolution, 1);
+        $value: nth($resolution, 2);
+
+        @if $key == $arg {
+            $result: $value;
+        }
+    }
+
+    @return $result;
+}
