@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Grid, TextField, Fab, Button } from '@material-ui/core';
 import { spacing } from '@material-ui/system';
 
 import styled from 'styled-components';
 import { Box } from "../components";
 import LogoSrc from '../assets/images/logo.jpg';
+
+const registerLink = props => <Link to="/register" {...props} />
 
 const SignInFormContainer = styled(Grid)`
     ${spacing}
@@ -45,7 +48,11 @@ class SignIn extends Component {
                             <Box mt={4}></Box>
                             <Fab color="primary" variant="extended" aria-label="Sign In">Sign In</Fab>
                             <Box mt={2}></Box>
-                            <Button color="primary">New Account</Button>
+                            <Button
+                                color="primary"
+                                component={registerLink}>
+                                New Account
+                            </Button>
 
                         </Grid>
                     </SignInForm>
