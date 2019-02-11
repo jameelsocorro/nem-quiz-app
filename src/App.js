@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { amber } from '@material-ui/core/colors';
 
 import SignIn from './scenes/SignIn';
@@ -20,6 +20,14 @@ const theme = createMuiTheme({
 	},
 });
 
+const PrivateRoute = ({ component: Component, ...rest }) => (
+	<Route {...rest} render={(props) => (
+	  localStorage.user
+		? <Component {...props} />
+		: <Redirect to='/' />
+	)} />
+);
+
 class App extends Component {
 	render() {
 		return (
@@ -29,6 +37,7 @@ class App extends Component {
 						<Switch>
 							<Route exact path="/" component={SignIn} />
 							<Route exact path="/register" component={Register} />
+							<PrivateRoute exact path="/home" component={Register}></PrivateRoute>
 						</Switch>
 					</Router>
 				</Provider>

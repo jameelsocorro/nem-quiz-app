@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { registerUser } from "../actions/users";
-
+import { registerUser } from "../actions/user";
 
 import styled from 'styled-components';
 import { Grid, TextField, Typography } from '@material-ui/core';
 import { spacing } from '@material-ui/system';
-import { Button } from "../components";
+import { NemButton } from "../components";
+import BaseComponent from '../core/BaseComponent';
 
 const SignInFormContainer = styled(Grid)`
     ${spacing}
@@ -20,7 +20,7 @@ const SignInForm = styled.form`
     width: 100%;
 `;
 
-class Register extends Component {
+class Register extends BaseComponent {
 
     state = {
         firstname: '',
@@ -30,46 +30,6 @@ class Register extends Component {
         nemAddress: '',
         errors: [],
         isLoading: false
-    }
-
-    handleChange = event => {
-        const control = event.target;
-        this.setState({ [control.name]: control.value });
-
-        let { errors } = this.state;
-        const hasError = errors[control.name];
-
-        if (control.name === 'email') {
-            const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
-            if (!regex.test(control.value)) {
-                if (!hasError) {
-                    errors[control.name] = true;
-                    this.setState({ errors });
-                }
-            }
-            else {
-                if (hasError) {
-                    delete errors[control.name];
-                    this.setState({ errors });
-                }
-            }
-
-        }
-        else {
-            if (control.required) {
-                if (!control.value && !hasError) {
-                    errors[control.name] = true;
-                    this.setState({ errors });
-                } else {
-                    if (control.value && hasError) {
-                        delete errors[control.name];
-                        this.setState({ errors });
-                    }
-                }
-            }
-        }
-
     }
 
     onRegisterUser = event => {
@@ -132,8 +92,8 @@ class Register extends Component {
                                         disabled={this.state.isLoading}
                                         error={this.state.errors['firstname']}
                                         helperText={this.state.errors['firstname'] ? 'Field is required' : ''}
-                                        onChange={this.handleChange}
-                                        onBlur={this.handleChange}
+                                        onChange={this.formHandleChange}
+                                        onBlur={this.formHandleChange}
                                     />
 
                                 </Grid>
@@ -150,8 +110,8 @@ class Register extends Component {
                                         disabled={this.state.isLoading}
                                         error={this.state.errors['lastname']}
                                         helperText={this.state.errors['lastname'] ? 'Field is required' : ''}
-                                        onChange={this.handleChange}
-                                        onBlur={this.handleChange}
+                                        onChange={this.formHandleChange}
+                                        onBlur={this.formHandleChange}
                                     />
 
                                 </Grid>
@@ -168,8 +128,8 @@ class Register extends Component {
                                 disabled={this.state.isLoading}
                                 error={this.state.errors['password']}
                                 helperText={this.state.errors['password'] ? 'Field is required' : ''}
-                                onChange={this.handleChange}
-                                onBlur={this.handleChange}
+                                onChange={this.formHandleChange}
+                                onBlur={this.formHandleChange}
                             />
 
                             <TextField
@@ -182,8 +142,8 @@ class Register extends Component {
                                 disabled={this.state.isLoading}
                                 error={this.state.errors['email']}
                                 helperText={this.state.errors['email'] ? 'Invalid email' : ''}
-                                onChange={this.handleChange}
-                                onBlur={this.handleChange}
+                                onChange={this.formHandleChange}
+                                onBlur={this.formHandleChange}
                             />
 
                             <TextField
@@ -196,17 +156,17 @@ class Register extends Component {
                                 disabled={this.state.isLoading}
                                 error={this.state.errors['nemAddress']}
                                 helperText={this.state.errors['nemAddress'] ? 'Field is required' : ''}
-                                onChange={this.handleChange}
-                                onBlur={this.handleChange}
+                                onChange={this.formHandleChange}
+                                onBlur={this.formHandleChange}
                             />
 
-                            <Button
+                            <NemButton
                                 mt={4}
                                 isLoading={this.state.isLoading}
                                 disabled={!isFormValid || this.state.isLoading}
                                 type="submit"
                                 text="Register">
-                            </Button>
+                            </NemButton>
 
                         </Grid>
                     </SignInForm>
@@ -217,8 +177,8 @@ class Register extends Component {
 }
 
 function mapStateToProps(state) {
-    const { users } = state.users;
-    return { users };
+    const { data } = state.user;
+    return { user: data };
 };
 
 function mapDispatchToProps(dispatch) {
