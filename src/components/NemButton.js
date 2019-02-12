@@ -10,6 +10,7 @@ const ButtonContainer = styled(Box)`
 
 const ButtonExtended = styled(Fab)`
     width: 100% !important;
+    color: ${props => props.color === 'primary' && '#fff !important'};
 `;
 
 const ButtonProgress = styled(CircularProgress)`
@@ -20,7 +21,7 @@ const ButtonProgress = styled(CircularProgress)`
     right: 16px;
 `;
 
-export const Button = (props) => (
+export const NemButton = (props) => (
     <ButtonContainer
         m={props.m}
         mt={props.mt}
