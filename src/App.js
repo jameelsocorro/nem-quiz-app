@@ -5,6 +5,8 @@ import { amber } from '@material-ui/core/colors';
 
 import SignIn from './scenes/SignIn';
 import Register from './scenes/Register';
+import Leaderboard from './scenes/Leaderboard';
+import Home from './scenes/Home';
 
 import { Provider } from 'react-redux';
 import configureStore from './reducers/store.config';
@@ -29,6 +31,8 @@ class App extends Component {
 						<Switch>
 							<Route exact path="/" component={SignIn} />
 							<Route exact path="/register" component={Register} />
+							<Route exact path="/leaderboard" component={Leaderboard} />
+							<Route exact path="/home" component={Home} />
 						</Switch>
 					</Router>
 				</Provider>
