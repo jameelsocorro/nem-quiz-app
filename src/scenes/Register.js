@@ -48,7 +48,7 @@ class Register extends BaseComponent {
                 nemAddress
             }).then(() => {
                 this.setState({ isLoading: false });
-                this.props.history.push('/');
+                this.props.history.push('/home');
             });;
         }
     }
