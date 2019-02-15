@@ -7,7 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { ButtonNavBar } from "../components";
+import { NemNavBar } from "../components";
 
 const styles = theme => ({
   root: {
@@ -42,7 +42,7 @@ function Leaderboard(props) {
 
   return (
       <div className={classes.bg}>
-       <ButtonNavBar location="leaderboard"></ButtonNavBar>
+       <NemNavBar location="leaderboard"></NemNavBar>
           <h2 className={classes.header}>Top 10 Leaderboard</h2>
           <Paper className={classes.root}>
                 <Table className={classes.table}>
@@ -67,7 +67,7 @@ function Leaderboard(props) {
                 </Table>
             </Paper>
       </div>
-            
+
   );
 }
 

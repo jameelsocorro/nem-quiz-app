@@ -15,30 +15,41 @@ const store = configureStore();
 
 const theme = createMuiTheme({
 	palette: {
+		background: { paper: "#fff", default: "#eeee" },
 		primary: {
 			main: '#00C4B4'
 		},
-		secondary: amber,
+		secondary: amber
 	},
+	typography: {
+		htmlFontSize: 10,
+		fontFamily: "'Proxima Nova', sans-serif"
+	},
+	shape: {
+		borderRadius: 8
+	}
 });
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
 	<Route {...rest} render={(props) => (
-	  localStorage.user
-		? <Component {...props} />
-		: <Redirect to='/' />
+	  localStorage.getItem('user')
+		? (rest.path === '/' || rest.path === '/register') ?
+			<Redirect to='/home' /> : <Component {...props} />
+		: (rest.path !== '/' && rest.path !== '/register') ?
+			<Redirect to='/' /> : <Component {...props} />
 	)} />
 );
 
 class App extends Component {
 	render() {
+		console.log(theme);
 		return (
 			<MuiThemeProvider theme={theme}>
 				<Provider store={store}>
 					<Router>
 						<Switch>
-							<Route exact path="/" component={SignIn} />
-							<Route exact path="/register" component={Register} />
+							<PrivateRoute exact path="/" component={SignIn} />
+							<PrivateRoute exact path="/register" component={Register} />
 							<PrivateRoute exact path="/leaderboard" component={Leaderboard} />
 							<PrivateRoute exact path="/home" component={Home} />
 						</Switch>
