@@ -1,65 +1,48 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { ButtonNavBar } from "../components";
-import { QuizCard } from "../components";
-import ImgSrc from '../assets/images/logo.jpg';
+import React, { Component } from 'react';
+import { withTheme } from '@material-ui/core/styles';
+import { NemQuizCard, NemNavBar, Box } from "../components";
 
-const styles = theme => ({
-    root: {
-        width: '50%',
-        marginTop: theme.spacing.unit * 3,
-        overflowX: 'auto',
-        margin: '0 auto'
+const quizzes = [
+    {
+        id: 1,
+        type: 'Logo',
+        title: 'NEM Ecosystem',
+        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+        imageSrc: 'quiz-card.jpeg'
     },
-    table: {
-        minWidth: 700,
+    {
+        id: 2,
+        type: 'General',
+        title: 'Test Quiz 2',
+        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+        imageSrc: 'quiz-card.jpeg'
     },
-    header: {
-        textAlign: 'center'
-    },
-    bg: {
-        backgroundColor: '#EEEEEE',
-        height: '100vh'
+    {
+        id: 3,
+        type: 'Logo',
+        title: 'Test Quiz 3',
+        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+        imageSrc: 'quiz-card.jpeg'
     }
-});
-
-let id = 0;
-function createData(title) {
-    id += 1;
-    return { id, title};
-}
-
-const rows = [
-    createData('NEM Quiz 1'),
-    createData('NEM Quiz 2'),
-    createData('NEM Quiz 3'),
 ];
 
-function Home(props) {
-    const { classes } = props;
-
-    return (
-        <div className={classes.bg}>
-            <ButtonNavBar location="home"></ButtonNavBar>
-            {
-                rows.map(function (row, index) {
-                    return <QuizCard image={ImgSrc} title={row.title}></QuizCard>
-                })
-            }
-        </div>
-
-    );
+class Home extends Component {
+    render() {
+        const { theme } = this.props;
+        return (
+            <Box className="app-max-height"
+                    display="flex" flexDirection="column">
+                <NemNavBar></NemNavBar>
+                <Box p={2} flexGrow={2} bgColor={theme.palette.background.default}>
+                {
+                    quizzes.map(function (quiz, index) {
+                        return <NemQuizCard key={index} {...quiz} cardImage={require(`../assets/images/${quiz.imageSrc}`)}></NemQuizCard>
+                    })
+                }
+                </Box>
+            </Box>
+        );
+    }
 }
 
-Home.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(Home);
+export default withTheme()(Home);

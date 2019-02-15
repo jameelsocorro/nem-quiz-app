@@ -50,8 +50,9 @@ class SignIn extends BaseComponent {
                 this.setState({ isLoading: false });
 
                 if(!this.props.error) {
-                    this.props.history.push('/home');
                     localStorage.setItem('user', JSON.stringify(this.props.user));
+                    this.props.history.push('/home');
+                    return;
                 }
 
             });;
