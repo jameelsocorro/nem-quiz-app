@@ -1,78 +1,79 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { NemNavBar } from "../components";
+import { NemNavBar, Box } from "../components";
+import { Typography, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
 
-const styles = theme => ({
-  root: {
-    width: '50%',
-    marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto',
-    margin: '0 auto'
-  },
-  header: {
-      textAlign: 'center'
-  },
-  bg: {
-      backgroundColor: '#EEEEEE',
-      height: '100vh'
-  }
-});
-
-let id = 0;
-function createData(name, score, time) {
-  id += 1;
-  return { id, name, score, time };
-}
-
-const rows = [
-    createData('Jamie', 80, 80.9),
-    createData('Jameel', 90, 70.8),
-    createData('Sharie', 100, 60.5),
+const items = [
+    {
+        id: 1,
+        firstName: 'Jameel',
+        lastName: 'Socorro',
+        score: 9
+    },
+    {
+        id: 2,
+        firstName: 'Jamie',
+        lastName: 'Socorro',
+        score: 9
+    },
+    {
+        id: 3,
+        firstName: 'Paula',
+        lastName: 'Lara',
+        score: 9
+    },
 ];
 
-function Leaderboard(props) {
-  const { classes } = props;
+const styles = theme => ({
+    root: {
+        height: '100vh',
+        backgroundColor: theme.palette.background.default
+    },
+    tableContainer: {
+        maxWidth: theme.maxWidth,
+        margin: '0 auto',
+        width: '100%',
+        paddingTop: 0,
+        boxSizing: 'border-box'
+    }
+});
 
-  return (
-      <div className={classes.bg}>
-       <NemNavBar location="leaderboard"></NemNavBar>
-          <h2 className={classes.header}>Top 10 Leaderboard</h2>
-          <Paper className={classes.root}>
-                <Table className={classes.table}>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Score</TableCell>
-                            <TableCell>Time</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows.map(row => (
-                            <TableRow key={row.id}>
-                                <TableCell component="th" scope="row">
-                                    {row.name}
-                                </TableCell>
-                                <TableCell>{row.score}</TableCell>
-                                <TableCell>{row.time}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </Paper>
-      </div>
-
-  );
+class Leaderboard extends Component {
+    render() {
+        return (
+            <Box className={this.props.classes.root}
+                    display="flex" flexDirection="column">
+                <NemNavBar></NemNavBar>
+                <Box mt={2}>
+                    <Typography gutterBottom align="center" variant="h5" component="h2">
+                        Top 10 Leaders
+                    </Typography>
+                </Box>
+                <Box className={this.props.classes.tableContainer} p={2}>
+                    <Paper>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Name</TableCell>
+                                    <TableCell align="right">Score</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {items.map(row => (
+                                    <TableRow key={row.id}>
+                                        <TableCell component="th" scope="row">
+                                            {row.firstName} {row.lastName}
+                                        </TableCell>
+                                        <TableCell align="right">{row.score}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </Paper>
+                </Box>
+            </Box>
+        );
+    }
 }
-
-Leaderboard.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 export default withStyles(styles)(Leaderboard);
