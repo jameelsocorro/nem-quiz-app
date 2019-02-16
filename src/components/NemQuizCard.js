@@ -1,19 +1,36 @@
 import React from 'react';
 
-import { Card, CardHeader, IconButton, CardContent, Typography, withStyles } from '@material-ui/core';
+import { Card, CardHeader, IconButton, CardContent, Typography, withStyles, Tooltip } from '@material-ui/core';
 import PlayCirleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 
 const styles = theme => ({
   card: {
-    minHeight: "300px",
     display: 'flex',
+    minHeight: '300px',
+    maxHeight: '300px',
     flexDirection: 'column',
     justifyContent: 'space-between',
     marginBottom: theme.spacing.unit * 2,
     padding: theme.spacing.unit * 2,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center'
+    backgroundPosition: 'center',
+    boxSizing: 'border-box',
+    cursor: 'pointer',
+    transition: '0.3s all ease-in-out',
+
+    '&:hover': {
+      boxShadow: theme.shadows[12],
+    },
+
+    [theme.breakpoints.up('sm')]: {
+      marginRight: theme.spacing.unit * 2,
+      width: `calc(50% - ${theme.spacing.unit * 2}px)`
+    },
+
+    [theme.breakpoints.up('md')]: {
+      width: `calc(${100/3}% - ${theme.spacing.unit * 2}px)`
+    }
   },
   cardHeader: {
     padding: 0
@@ -31,16 +48,18 @@ const styles = theme => ({
 });
 
 const NemQuizCard = (props) => (
-  <Card className={props.classes.card} style={{
+  <Card raised={true} className={props.classes.card} style={{
     backgroundImage: `linear-gradient(to right bottom, rgba(0, 0, 0, 0.64), rgba(0, 0, 0, 0.64)),
       url(${props.cardImage})` }}>
 
     <CardHeader
       className={props.classes.cardHeader}
       action={
-        <IconButton className={props.classes.textColor}>
-          <PlayCirleOutlineIcon />
-        </IconButton>
+        <Tooltip title="Start Quiz">
+          <IconButton className={props.classes.textColor}>
+            <PlayCirleOutlineIcon />
+          </IconButton>
+        </Tooltip>
       }
       title={
         <Typography variant="button" gutterBottom>

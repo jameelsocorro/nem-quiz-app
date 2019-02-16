@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { NemQuizCard, NemNavBar, Box } from "../components";
 
 const quizzes = [
@@ -23,17 +23,51 @@ const quizzes = [
         title: 'Test Quiz 3',
         description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
         imageSrc: 'quiz-card.jpeg'
+    },
+    {
+        id: 4,
+        type: 'Logo',
+        title: 'Test Quiz 4',
+        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+        imageSrc: 'quiz-card.jpeg'
+    },
+    {
+        id: 5,
+        type: 'Logo',
+        title: 'Test Quiz 5',
+        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+        imageSrc: 'quiz-card.jpeg'
     }
 ];
 
+const styles = theme => ({
+    root: {
+        height: '100vh',
+        backgroundColor: theme.palette.background.default
+    },
+    cardContainer: {
+        flexGrow: 2,
+        paddingBottom: 0,
+        maxWidth: theme.maxWidth,
+        margin: 'auto',
+
+        [theme.breakpoints.up('sm')]: {
+            display: 'flex',
+            alignContent: 'flex-start',
+            flexWrap: 'wrap',
+            paddingRight: 0,
+            overflow: 'auto'
+        }
+    }
+});
+
 class Home extends Component {
     render() {
-        const { theme } = this.props;
         return (
-            <Box className="app-max-height"
+            <Box className={this.props.classes.root}
                     display="flex" flexDirection="column">
                 <NemNavBar></NemNavBar>
-                <Box p={2} flexGrow={2} bgColor={theme.palette.background.default}>
+                <Box className={this.props.classes.cardContainer} p={2}>
                 {
                     quizzes.map(function (quiz, index) {
                         return <NemQuizCard key={index} {...quiz} cardImage={require(`../assets/images/${quiz.imageSrc}`)}></NemQuizCard>
@@ -45,4 +79,4 @@ class Home extends Component {
     }
 }
 
-export default withTheme()(Home);
+export default withStyles(styles)(Home);

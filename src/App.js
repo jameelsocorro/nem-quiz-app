@@ -27,7 +27,8 @@ const theme = createMuiTheme({
 	},
 	shape: {
 		borderRadius: 8
-	}
+	},
+	maxWidth: '1280px'
 });
 
 const PrivateRoute = ({ component: Component, ...rest }) => (

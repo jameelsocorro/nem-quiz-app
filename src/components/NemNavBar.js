@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link, withRouter } from 'react-router-dom';
 
-import { AppBar, Toolbar, IconButton } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Tooltip } from '@material-ui/core';
 
 import HomeIcon from '@material-ui/icons/Home';
 import AssignmentIcon from '@material-ui/icons/Assignment';
@@ -28,15 +28,19 @@ class NemNavBar extends Component {
           <div>
             {
               pathname !== '/home' &&
-              <IconButton component={homeLink}>
-                <HomeIcon />
-              </IconButton>
+              <Tooltip title="Home">
+                <IconButton component={homeLink}>
+                  <HomeIcon />
+                </IconButton>
+              </Tooltip>
             }
             {
               pathname !== '/leaderboard' &&
-              <IconButton component={leaderboardLink}>
-                <AssignmentIcon color="secondary" />
-              </IconButton>
+              <Tooltip title="Leaderboard">
+                <IconButton component={leaderboardLink}>
+                  <AssignmentIcon color="secondary" />
+                </IconButton>
+              </Tooltip>
             }
           </div>
         </Toolbar>
