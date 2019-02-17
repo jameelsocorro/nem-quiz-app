@@ -48,7 +48,7 @@ const styles = theme => ({
 });
 
 const NemQuizCard = (props) => (
-  <Card raised={true} className={props.classes.card} style={{
+  <Card raised={true} onClick={props.onClick} className={props.classes.card} style={{
     backgroundImage: `linear-gradient(to right bottom, rgba(0, 0, 0, 0.64), rgba(0, 0, 0, 0.64)),
       url(${props.cardImage})` }}>
 

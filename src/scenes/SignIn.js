@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Grid, TextField, Button } from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
+import { Grid, TextField, Button, Link } from '@material-ui/core';
 import { spacing } from '@material-ui/system';
 
 import { bindActionCreators } from 'redux';
@@ -14,7 +14,7 @@ import LogoSrc from '../assets/images/logo.jpg';
 import { NemButton } from "../components";
 import BaseComponent from '../core/BaseComponent';
 
-const registerLink = props => <Link to="/register" {...props} />
+const registerLink = props => <RouterLink to="/register" {...props} />
 
 const SignInFormContainer = styled(Grid)`
     ${spacing}
@@ -123,12 +123,21 @@ class SignIn extends BaseComponent {
                                 type="submit"
                                 text="Sign In">
                             </NemButton>
+                            <NemButton
+                                mt={1}
+                                type="button"
+                                color="secondary"
+                                onClick={() => this.props.history.push('/leaderboard')}
+                                text="Leaderboard">
+                            </NemButton>
                             <Box mt={2}></Box>
-                            <Button
+                            <Link
+                                align="center"
                                 color="primary"
+                                variant="body2"
                                 component={registerLink}>
-                                New Account
-                            </Button>
+                                Register a new account
+                            </Link>
 
                         </Grid>
                     </SignInForm>

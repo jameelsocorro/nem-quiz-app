@@ -62,7 +62,14 @@ const styles = theme => ({
 });
 
 class Home extends Component {
+    state = {}
+
+    onQuizClick = quiz => {
+        this.props.history.push(`/quiz/${quiz.id}/1`)
+    }
+
     render() {
+        const self = this;
         return (
             <Box className={this.props.classes.root}
                     display="flex" flexDirection="column">
@@ -70,7 +77,13 @@ class Home extends Component {
                 <Box className={this.props.classes.cardContainer} p={2}>
                 {
                     quizzes.map(function (quiz, index) {
-                        return <NemQuizCard key={index} {...quiz} cardImage={require(`../assets/images/${quiz.imageSrc}`)}></NemQuizCard>
+                        return (
+                            <NemQuizCard
+                                onClick={() => self.onQuizClick(quiz)}
+                                key={index} {...quiz}
+                                cardImage={require(`../assets/images/${quiz.imageSrc}`)}>
+                            </NemQuizCard>
+                        )
                     })
                 }
                 </Box>

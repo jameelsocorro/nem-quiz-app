@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import { Link, withRouter } from 'react-router-dom';
 
-import { AppBar, Toolbar, IconButton, Tooltip } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Tooltip, withStyles } from '@material-ui/core';
 
 import HomeIcon from '@material-ui/icons/Home';
 import AssignmentIcon from '@material-ui/icons/Assignment';
@@ -13,21 +12,26 @@ import { Box } from './Box';
 const homeLink = props => <Link to="/home" {...props} />
 const leaderboardLink = props => <Link to="/leaderboard" {...props} />
 
-const AppImg = styled.img`
-  display: flex;
-  height: 30px;
-`;
+const styles = theme => ({
+  appLogo: {
+      display: 'flex',
+      height: '30px'
+  },
+  noShadow: {
+    boxShadow: 'none'
+  }
+});
 
 class NemNavBar extends Component {
   render() {
-    const { pathname } = this.props.location;
+    const { classes, location, noShadow } = this.props;
     return (
-      <AppBar position="sticky" color="inherit">
+      <AppBar className={ noShadow && classes.noShadow } position="sticky" color="inherit">
         <Toolbar>
-          <Box flexGrow={1}><AppImg src={AppLogo} alt="" /></Box>
+          <Box flexGrow={1}><img className={classes.appLogo} src={AppLogo} alt="" /></Box>
           <div>
             {
-              pathname !== '/home' &&
+              location.pathname !== '/home' &&
               <Tooltip title="Home">
                 <IconButton component={homeLink}>
                   <HomeIcon />
@@ -35,7 +39,7 @@ class NemNavBar extends Component {
               </Tooltip>
             }
             {
-              pathname !== '/leaderboard' &&
+              location.pathname !== '/leaderboard' &&
               <Tooltip title="Leaderboard">
                 <IconButton component={leaderboardLink}>
                   <AssignmentIcon color="secondary" />
@@ -49,4 +53,4 @@ class NemNavBar extends Component {
   }
 }
 
-export default withRouter(NemNavBar);
+export default withRouter(withStyles(styles)(NemNavBar));

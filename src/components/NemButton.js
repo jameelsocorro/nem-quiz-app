@@ -6,11 +6,13 @@ import { Box } from "./Box";
 
 const ButtonContainer = styled(Box)`
     position: relative;
+    width: 100%;
 `;
 
 const ButtonExtended = styled(Fab)`
     width: 100% !important;
-    color: ${props => props.color === 'primary' && '#fff !important'};
+    font-weight: 600 !important;
+    color: ${props => (props.color === 'primary' || props.color === 'secondary') && '#fff !important'};
 `;
 
 const ButtonProgress = styled(CircularProgress)`
@@ -23,6 +25,7 @@ const ButtonProgress = styled(CircularProgress)`
 
 export const NemButton = (props) => (
     <ButtonContainer
+        className={props.className}
         m={props.m}
         mt={props.mt}
         mb={props.mb}
@@ -34,6 +37,7 @@ export const NemButton = (props) => (
         pl={props.pl}
         pr={props.pr}>
         <ButtonExtended
+            onClick={props.onClick}
             variant="extended"
             disabled={props.disabled}
             color={props.color || 'primary'}
