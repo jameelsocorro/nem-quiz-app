@@ -3,13 +3,14 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { amber } from '@material-ui/core/colors';
 
+import { Provider } from 'react-redux';
+import configureStore from './reducers/store.config';
+
 import SignIn from './scenes/SignIn';
 import Register from './scenes/Register';
 import Leaderboard from './scenes/Leaderboard';
 import Home from './scenes/Home';
-
-import { Provider } from 'react-redux';
-import configureStore from './reducers/store.config';
+import Quiz from './scenes/Quiz';
 
 const store = configureStore();
 
@@ -33,11 +34,11 @@ const theme = createMuiTheme({
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
 	<Route {...rest} render={(props) => (
-	  localStorage.getItem('user')
-		? (rest.path === '/' || rest.path === '/register') ?
-			<Redirect to='/home' /> : <Component {...props} />
-		: (rest.path !== '/' && rest.path !== '/register') ?
-			<Redirect to='/' /> : <Component {...props} />
+		localStorage.getItem('user')
+			? (rest.path === '/' || rest.path === '/register') ?
+				<Redirect to='/home' /> : <Component {...props} />
+			: (rest.path !== '/' && rest.path !== '/register' && rest.path !== '/leaderboard') ?
+				<Redirect to='/' /> : <Component {...props} />
 	)} />
 );
 
@@ -53,6 +54,7 @@ class App extends Component {
 							<PrivateRoute exact path="/register" component={Register} />
 							<PrivateRoute exact path="/leaderboard" component={Leaderboard} />
 							<PrivateRoute exact path="/home" component={Home} />
+							<PrivateRoute exact path="/quiz/:quizId/:quizItemId" component={Quiz} />
 						</Switch>
 					</Router>
 				</Provider>
