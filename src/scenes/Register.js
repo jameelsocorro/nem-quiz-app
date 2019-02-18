@@ -1,18 +1,23 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { registerUser } from "../actions/user";
 
 import styled from 'styled-components';
-import { Grid, TextField, Typography } from '@material-ui/core';
+import { Grid, TextField, Typography, Tooltip, IconButton } from '@material-ui/core';
 import { spacing } from '@material-ui/system';
-import { NemButton } from "../components";
+import { NemButton, Box } from "../components";
 import BaseComponent from '../core/BaseComponent';
+
+import ArrowBack from '@material-ui/icons/ArrowBack';
+
+const homeLink = props => <Link to="/home" {...props} />
 
 const SignInFormContainer = styled(Grid)`
     ${spacing}
-    max-width: 650px;
+    max-width: 500px;
 `;
 
 const SignInForm = styled.form`
@@ -48,7 +53,7 @@ class Register extends BaseComponent {
                 nemAddress
             }).then(() => {
                 this.setState({ isLoading: false });
-                this.props.history.push('/');
+                this.props.history.push('/home');
             });;
         }
     }
@@ -69,9 +74,16 @@ class Register extends BaseComponent {
         return (
             <Grid className="app-max-height" container direction="row" justify="center" alignItems="center">
                 <SignInFormContainer p={4} className="app-max-width" container direction="column" justify="center" alignItems="center">
-                    <Typography style={{ alignSelf: 'flex-start' }} variant="h2" gutterBottom>
-                        Register new account
-                    </Typography>
+                    <Box className="app-width-100" display="flex" alignItems="baseline" justifyContent="flex-start">
+                        <Tooltip title="Back to Sign In">
+                            <IconButton component={homeLink}>
+                                <ArrowBack />
+                            </IconButton>
+                        </Tooltip>
+                        <Typography style={{ fontWeight: 300 }} component="h2" variant="h4" gutterBottom>
+                            Register new account
+                        </Typography>
+                    </Box>
 
                     <SignInForm onSubmit={this.onRegisterUser}>
 
