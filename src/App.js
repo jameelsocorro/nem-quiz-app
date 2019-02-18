@@ -11,6 +11,7 @@ import Register from './scenes/Register';
 import Leaderboard from './scenes/Leaderboard';
 import Home from './scenes/Home';
 import Quiz from './scenes/Quiz';
+import QuizSummary from './scenes/QuizSummary';
 
 const store = configureStore();
 
@@ -55,6 +56,7 @@ class App extends Component {
 							<PrivateRoute exact path="/leaderboard" component={Leaderboard} />
 							<PrivateRoute exact path="/home" component={Home} />
 							<PrivateRoute exact path="/quiz/:quizId/:quizItemId" component={Quiz} />
+							<PrivateRoute exact path="/quizsummary/:quizId" component={QuizSummary} />
 						</Switch>
 					</Router>
 				</Provider>

@@ -36,6 +36,10 @@ const styles = theme => ({
         alignItems: 'center',
         boxSizing: 'border-box'
     },
+    group: {
+        flexWrap: 'noWrap',
+        minHeight: '192px'
+    },
     logo: {
         width: '150px',
         marginTop: theme.spacing.unit * 1,

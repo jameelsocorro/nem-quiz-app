@@ -5,38 +5,17 @@ import { NemQuizCard, NemNavBar, Box } from "../components";
 const quizzes = [
     {
         id: 1,
-        type: 'Logo',
+        type: 'Logo Quiz',
         title: 'NEM Ecosystem',
         description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-        imageSrc: 'quiz-card.jpeg'
+        imageSrc: 'nem-ecosystem.png'
     },
     {
         id: 2,
-        type: 'General',
+        type: 'General Knowledge',
         title: 'Test Quiz 2',
         description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-        imageSrc: 'quiz-card.jpeg'
-    },
-    {
-        id: 3,
-        type: 'Logo',
-        title: 'Test Quiz 3',
-        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-        imageSrc: 'quiz-card.jpeg'
-    },
-    {
-        id: 4,
-        type: 'Logo',
-        title: 'Test Quiz 4',
-        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-        imageSrc: 'quiz-card.jpeg'
-    },
-    {
-        id: 5,
-        type: 'Logo',
-        title: 'Test Quiz 5',
-        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-        imageSrc: 'quiz-card.jpeg'
+        imageSrc: 'general-knowledge.png'
     }
 ];
 
@@ -58,6 +37,23 @@ const styles = theme => ({
             paddingRight: 0,
             overflow: 'auto'
         }
+    },
+    card: {
+        cursor: 'pointer',
+        transition: '0.3s all ease-in-out',
+
+        '&:hover': {
+            boxShadow: theme.shadows[12],
+        },
+
+        [theme.breakpoints.up('sm')]: {
+            marginRight: theme.spacing.unit * 2,
+            width: `calc(50% - ${theme.spacing.unit * 2}px)`
+        },
+
+        [theme.breakpoints.up('md')]: {
+            width: `calc(${100 / 3}% - ${theme.spacing.unit * 2}px)`
+        }
     }
 });
 
@@ -70,15 +66,17 @@ class Home extends Component {
 
     render() {
         const self = this;
+        const { classes } = this.props;
         return (
-            <Box className={this.props.classes.root}
+            <Box className={classes.root}
                     display="flex" flexDirection="column">
                 <NemNavBar></NemNavBar>
-                <Box className={this.props.classes.cardContainer} p={2}>
+                <Box className={classes.cardContainer} p={2}>
                 {
                     quizzes.map(function (quiz, index) {
                         return (
                             <NemQuizCard
+                                className={classes.card}
                                 onClick={() => self.onQuizClick(quiz)}
                                 key={index} {...quiz}
                                 cardImage={require(`../assets/images/${quiz.imageSrc}`)}>
