@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Grid, TextField, Button, Link } from '@material-ui/core';
+import { Grid, TextField, Link } from '@material-ui/core';
 import { spacing } from '@material-ui/system';
 
 import { bindActionCreators } from 'redux';
@@ -124,7 +124,7 @@ class SignIn extends BaseComponent {
                                 text="Sign In">
                             </NemButton>
                             <NemButton
-                                mt={1}
+                                mt={2}
                                 type="button"
                                 color="secondary"
                                 onClick={() => this.props.history.push('/leaderboard')}

@@ -24,6 +24,23 @@ const styles = theme => ({
             paddingRight: 0,
             overflow: 'auto'
         }
+    },
+    card: {
+        cursor: 'pointer',
+        transition: '0.3s all ease-in-out',
+
+        '&:hover': {
+            boxShadow: theme.shadows[12],
+        },
+
+        [theme.breakpoints.up('sm')]: {
+            marginRight: theme.spacing.unit * 2,
+            width: `calc(50% - ${theme.spacing.unit * 2}px)`
+        },
+
+        [theme.breakpoints.up('md')]: {
+            width: `calc(${100 / 3}% - ${theme.spacing.unit * 2}px)`
+        }
     }
 });
 
@@ -67,16 +84,18 @@ class Home extends Component {
 
     render() {
         const self = this;
+        const { classes } = this.props;
         return (
-            <Box className={this.props.classes.root}
+            <Box className={classes.root}
                     display="flex" flexDirection="column">
                 <NemNavBar></NemNavBar>
-                <Box className={this.props.classes.cardContainer} p={2}>
+                <Box className={classes.cardContainer} p={2}>
                 {
                     (this.props.quizzes && this.props.quizzes.length > 0) &&
                     this.props.quizzes.map(function (quiz, index) {
                         return (
                             <NemQuizCard
+                                className={classes.card}
                                 onClick={() => self.onQuizClick(quiz)}
                                 key={index}
                                 title={quiz.title}
