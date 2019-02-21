@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import { amber } from '@material-ui/core/colors';
+import { amber, red } from '@material-ui/core/colors';
 
 import { Provider } from 'react-redux';
 import configureStore from './reducers/store.config';
@@ -21,7 +21,8 @@ const theme = createMuiTheme({
 		primary: {
 			main: '#00C4B4'
 		},
-		secondary: amber
+		secondary: amber,
+		red: red
 	},
 	typography: {
 		htmlFontSize: 10,
