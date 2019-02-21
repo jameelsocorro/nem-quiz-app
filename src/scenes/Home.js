@@ -2,43 +2,9 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { NemQuizCard, NemNavBar, Box } from "../components";
 
-const quizzes = [
-    {
-        id: 1,
-        type: 'Logo',
-        title: 'NEM Ecosystem',
-        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-        imageSrc: 'quiz-card.jpeg'
-    },
-    {
-        id: 2,
-        type: 'General',
-        title: 'Test Quiz 2',
-        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-        imageSrc: 'quiz-card.jpeg'
-    },
-    {
-        id: 3,
-        type: 'Logo',
-        title: 'Test Quiz 3',
-        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-        imageSrc: 'quiz-card.jpeg'
-    },
-    {
-        id: 4,
-        type: 'Logo',
-        title: 'Test Quiz 4',
-        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-        imageSrc: 'quiz-card.jpeg'
-    },
-    {
-        id: 5,
-        type: 'Logo',
-        title: 'Test Quiz 5',
-        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-        imageSrc: 'quiz-card.jpeg'
-    }
-];
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { getQuizzes, getQuizItems } from "../actions/quiz";
 
 const styles = theme => ({
     root: {
@@ -62,10 +28,41 @@ const styles = theme => ({
 });
 
 class Home extends Component {
+    
     state = {}
+
+    componentDidMount() {
+        this.props.getQuizzes().then(() => {
+            this.setState({ isLoading: false});            
+        });
+
+        this.props.getQuizItems().then(() => {
+            this.setState({ isLoading: false});   
+            this.assignRandomQuizItems();       
+        });
+    }
+
+    getRandomQuizItem(quizitems) {
+        return quizitems[Math.floor(Math.random() * quizitems.length)];
+    }
+
+    assignRandomQuizItems() {
+        const self = this;
+        let randomQuizItems = [];
+        this.props.quizzes.map(function (quiz) {
+            while (randomQuizItems.length < 10) {
+                const quizItem = self.getRandomQuizItem(self.props.quizItems);
+                const isExisting = randomQuizItems.find(m => m.quizitemid === quizItem.quizitemid);
+                if (!isExisting) {
+                    randomQuizItems.push(quizItem);
+                }
+            }
+        }); 
+    }
 
     onQuizClick = quiz => {
         this.props.history.push(`/quiz/${quiz.id}/1`)
+
     }
 
     render() {
@@ -76,13 +73,16 @@ class Home extends Component {
                 <NemNavBar></NemNavBar>
                 <Box className={this.props.classes.cardContainer} p={2}>
                 {
-                    quizzes.map(function (quiz, index) {
+                    (this.props.quizzes && this.props.quizzes.length > 0) &&
+                    this.props.quizzes.map(function (quiz, index) {
                         return (
                             <NemQuizCard
                                 onClick={() => self.onQuizClick(quiz)}
-                                key={index} {...quiz}
-                                cardImage={require(`../assets/images/${quiz.imageSrc}`)}>
-                            </NemQuizCard>
+                                key={index}
+                                title={quiz.title}
+                                description= {quiz.description}
+                                quiztype= {quiz.quiztype}
+                                cardImage={require(`../assets/images/${quiz.imagesrc}`)}/>                         
                         )
                     })
                 }
@@ -92,4 +92,20 @@ class Home extends Component {
     }
 }
 
-export default withStyles(styles)(Home);
+function mapStateToProps(state) {
+    const { quizzes, quizItems, error } = state.quiz;
+    return {
+        quizzes: quizzes || [],
+        quizItems: quizItems || [],
+        error
+    };
+};
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(
+        { getQuizzes, getQuizItems },
+        dispatch
+    );
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Home));
