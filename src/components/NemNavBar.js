@@ -33,7 +33,7 @@ class NemNavBar extends Component {
   componentDidMount() {
     const user = localStorage.getItem('user');
     if (user) {
-      this.state({ user: JSON.parse(user) });
+      this.setState({ user: JSON.parse(user) });
     }
   }
 
