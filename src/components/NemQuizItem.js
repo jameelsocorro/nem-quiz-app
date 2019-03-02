@@ -67,7 +67,8 @@ class NemQuizItem extends Component {
         e.preventDefault();
 
         if (!this.props.finished) {
-
+            this.props.onSubmitAnswer(this.state.selectedItem);
+            this.setState({ selectedItem: null });
         }
     }
 
@@ -80,44 +81,34 @@ class NemQuizItem extends Component {
                     <Typography gutterBottom align="center" variant="h5" component="h2">
                         {data.question}
                     </Typography>
-                    <img className={classes.logo} src={require(`../assets/images/${data.logo}`)} alt="" />
+                    <img className={classes.logo} src={require(`../assets/images/logo-quiz/${data.imagesrc}`)} alt="" />
                     {
                         finished &&
                         <Fragment>
                             <div className={classes.answers}>
-                                {
-                                    data.userAnswer === data.correctAnswer ?
-                                        <Box className={classes.correctAnswerColor} display="flex" alignItems="center">
+                            {
+                                data.answers.map((a, index) => {
+                                    return (
+                                        <Box key={index} className={a.quizitemid === data.quizitemid ? classes.correctAnswerColor: classes.wrongAnswerColor}
+                                            display="flex" alignItems="center">
                                             <Box mr={1}>
                                                 <Typography variant="body2">
-                                                    {data.userAnswer}
+                                                    {a.answer}
                                                 </Typography>
                                             </Box>
-                                            <Box><CheckIcon></CheckIcon></Box>
+                                            <Box>
+                                                {
+                                                    a.quizitemid === data.quizitemid ?
+                                                    <CheckIcon></CheckIcon> : <CloseIcon></CloseIcon>
+                                                }
+                                            </Box>
                                         </Box>
-                                        :
-                                        <Fragment>
-                                            <Box className={classes.correctAnswerColor} display="flex" alignItems="center">
-                                                <Box mr={1}>
-                                                    <Typography variant="body2">
-                                                        {data.correctAnswer}
-                                                    </Typography>
-                                                </Box>
-                                                <Box><CheckIcon></CheckIcon></Box>
-                                            </Box>
-                                            <Box className={classes.wrongAnswerColor} mt={1} display="flex" alignItems="center">
-                                                <Box mr={1}>
-                                                    <Typography variant="body2">
-                                                        {data.userAnswer}
-                                                    </Typography>
-                                                </Box>
-                                                <Box><CloseIcon></CloseIcon></Box>
-                                            </Box>
-                                        </Fragment>
-                                }
+                                    )
+                                })
+                            }
                             </div>
                             <Typography className={classes.answerDescription} gutterBottom>
-                                {data.description} <Link href={data.link} className={classes.website}>Learn More</Link>
+                                {data.description} <Link target="_blank" href={data.website} className={classes.website}>Learn More</Link>
                             </Typography>
                         </Fragment>
                     }
@@ -126,15 +117,15 @@ class NemQuizItem extends Component {
                         <Fragment>
                             <div className={classes.answers}>
                                 {
-                                    data.items.map(item => {
+                                    data.options.map(item => {
                                         return (
                                             <Button
-                                                key={item.id}
+                                                key={item.quizanswerid}
                                                 variant="outlined"
                                                 className={classes.answerButton}
-                                                color={item.id === this.state.selectedItem ? 'primary' : 'default'}
-                                                onClick={() => this.onAnswerChanged(item.id)}>
-                                                {item.title}
+                                                color={item.quizanswerid === this.state.selectedItem ? 'primary' : 'default'}
+                                                onClick={() => this.onAnswerChanged(item.quizanswerid)}>
+                                                {item.answer}
                                             </Button>
                                         )
                                     })
@@ -146,12 +137,12 @@ class NemQuizItem extends Component {
                                 className={classes.itemButton}
                                 disabled={!isFormValid || this.state.isLoading}
                                 type="submit"
-                                text="Next">
+                                text={ data.itemsequence === 10 ? 'Finish' : 'Next' }>
                             </NemButton>
                         </Fragment>
                     }
                     <Typography variant="caption" gutterBottom align="center">
-                        Question 1 of 10
+                        Question {data.itemsequence} of 10
                     </Typography>
                 </form>
             </Box>

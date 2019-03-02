@@ -17,7 +17,7 @@ const store = configureStore();
 
 const theme = createMuiTheme({
 	palette: {
-		background: { paper: "#fff", default: "#eeee" },
+		background: { paper: "#fff", default: "#eeee", overlay: 'rgba(0,0,0,0.64)' },
 		primary: {
 			main: '#00C4B4'
 		},
@@ -56,8 +56,8 @@ class App extends Component {
 							<PrivateRoute exact path="/register" component={Register} />
 							<PrivateRoute exact path="/leaderboard" component={Leaderboard} />
 							<PrivateRoute exact path="/home" component={Home} />
-							<PrivateRoute exact path="/quiz/:quizId/:quizItemId" component={Quiz} />
-							<PrivateRoute exact path="/quizsummary/:quizId" component={QuizSummary} />
+							<PrivateRoute exact path="/quiz/:quizid" component={Quiz} />
+							<PrivateRoute exact path="/quizsummary/:quizid" component={QuizSummary} />
 						</Switch>
 					</Router>
 				</Provider>

@@ -34,7 +34,6 @@ export function signIn(user) {
         return axios.post(`${API_HOST_URL}/users/signin`, user)
             .then((result) => {
                 const { data } = result;
-                console.log(result);
                 dispatch({ type: SIGN_IN_USER_SUCCESS, payload: data });
             })
             .catch((error) => {

@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { NemQuizCard, NemNavBar, Box } from "../components";
+import { NemQuizCard, NemNavBar, Box, NemScreenLoader, NemLoader } from "../components";
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { getQuizzes, getQuizItems } from "../actions/quiz";
+import { getQuizzes } from "../actions/quiz";
+import { generateRandomUserQuizzes, validateUserQuiz } from "../actions/user-quiz";
 
 const styles = theme => ({
     root: {
@@ -14,8 +15,10 @@ const styles = theme => ({
     cardContainer: {
         flexGrow: 2,
         paddingBottom: 0,
+        width: '100%',
         maxWidth: theme.maxWidth,
         margin: 'auto',
+        boxSizing: 'border-box',
 
         [theme.breakpoints.up('sm')]: {
             display: 'flex',
@@ -45,84 +48,98 @@ const styles = theme => ({
 });
 
 class Home extends Component {
-    
-    state = {}
+
+    state = {
+        loading: false,
+        generatingUserQuiz: false
+    }
 
     componentDidMount() {
+        this.setState({ loading: true });
         this.props.getQuizzes().then(() => {
-            this.setState({ isLoading: false});            
+            this.setState({ loading: false });
         });
-
-        this.props.getQuizItems().then(() => {
-            this.setState({ isLoading: false});   
-            this.assignRandomQuizItems();       
-        });
-    }
-
-    getRandomQuizItem(quizitems) {
-        return quizitems[Math.floor(Math.random() * quizitems.length)];
-    }
-
-    assignRandomQuizItems() {
-        const self = this;
-        let randomQuizItems = [];
-        this.props.quizzes.map(function (quiz) {
-            while (randomQuizItems.length < 10) {
-                const quizItem = self.getRandomQuizItem(self.props.quizItems);
-                const isExisting = randomQuizItems.find(m => m.quizitemid === quizItem.quizitemid);
-                if (!isExisting) {
-                    randomQuizItems.push(quizItem);
-                }
-            }
-        }); 
     }
 
     onQuizClick = quiz => {
-        this.props.history.push(`/quiz/${quiz.id}/1`)
+        const user = JSON.parse(localStorage.getItem('user'));
 
+        this.props.validateUserQuiz(user.userid, quiz.quizid).then(() => {
+            if (!this.props.hasUserQuiz) {
+                this.setState({ generatingUserQuiz: true });
+                this.props.generateRandomUserQuizzes(user.userid, quiz.quizid).then(() => {
+                    this.setState({ generatingUserQuiz: false });
+                    this.props.history.push(`/quiz/${quiz.quizid}`);
+                });
+            } else {
+                this.props.history.push(`/quiz/${quiz.quizid}`);
+            }
+        });
     }
 
     render() {
         const self = this;
         const { classes } = this.props;
         return (
-            <Box className={classes.root}
-                    display="flex" flexDirection="column">
-                <NemNavBar></NemNavBar>
-                <Box className={classes.cardContainer} p={2}>
+            <Fragment>
                 {
-                    (this.props.quizzes && this.props.quizzes.length > 0) &&
-                    this.props.quizzes.map(function (quiz, index) {
-                        return (
-                            <NemQuizCard
-                                className={classes.card}
-                                onClick={() => self.onQuizClick(quiz)}
-                                key={index}
-                                title={quiz.title}
-                                description= {quiz.description}
-                                quiztype= {quiz.quiztype}
-                                cardImage={require(`../assets/images/${quiz.imagesrc}`)}/>                         
-                        )
-                    })
+                    this.state.generatingUserQuiz &&
+                    <NemScreenLoader title='Generating User Quiz'></NemScreenLoader>
                 }
+                <Box className={classes.root}
+                    display="flex" flexDirection="column">
+                    <NemNavBar></NemNavBar>
+                    {
+                        this.state.loading ?
+                            <NemLoader title='Getting Quizzes'></NemLoader>
+                            :
+                            <Box className={classes.cardContainer} p={2}>
+                                {
+                                    (this.props.quizzes && this.props.quizzes.length > 0) &&
+                                    this.props.quizzes.map(function (quiz, index) {
+                                        return (
+                                            <NemQuizCard
+                                                className={classes.card}
+                                                onClick={() => self.onQuizClick(quiz)}
+                                                key={index}
+                                                title={quiz.title}
+                                                description={quiz.description}
+                                                quiztype={quiz.quiztype}
+                                                cardImage={require(`../assets/images/${quiz.imagesrc}`)} />
+                                        )
+                                    })
+                                }
+                            </Box>
+                    }
                 </Box>
-            </Box>
+            </Fragment>
         );
     }
 }
 
 function mapStateToProps(state) {
-    const { quizzes, quizItems, error } = state.quiz;
+    const { quizzes } = state.quiz;
+    const { generateSuccess, hasUserQuiz } = state.userQuiz;
+
+    let error = null;
+
+    if (state.quiz.error) {
+        error = state.quiz.error;
+    } else if (state.userQuiz.error) {
+        error = state.userQuiz.error;
+    }
+
     return {
         quizzes: quizzes || [],
-        quizItems: quizItems || [],
+        generateSuccess,
+        hasUserQuiz,
         error
     };
 };
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(
-        { getQuizzes, getQuizItems },
+        { getQuizzes, generateRandomUserQuizzes, validateUserQuiz },
         dispatch
     );
 }
